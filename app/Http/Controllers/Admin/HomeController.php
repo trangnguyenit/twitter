@@ -61,14 +61,17 @@ class HomeController extends Controller
 
     public function load(Request $request) {
         $count = $request['count'];
-        if ($count < 0){
-            $count = 2;
-        }
+        // if ($count < 0){
+        //     $count = 3;
+        // }
         $offset = $request['offset'];
-        if ($offset < 0){
-            $offset = 2;
-        }
+        // if ($offset < 0){
+        //     $offset = 3;
+        // }
+        $name = Auth::user()->name;
+
         $twitters = Twitter::orderBy('created_at', 'desc')->take($count)->skip($offset)->get()->toArray();
+        array_push($twitters, $name);
         echo json_encode($twitters);
     }
 

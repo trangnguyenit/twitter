@@ -33,17 +33,28 @@
 
   <button class="btn btn-default" type="submit" onclick="loadAjax()">Twitt</button>
 	
-  <div class="container">
-      <div class="row" id="div-twitters">
+  <div class="container" id="twitters">
+      <!--<div class="row" id="a_name">
         
       </div>
+      <div class="row" id="div_time">
+        
+      </div>
+      <div class="row" id="div_content">
+      
+      </div>
+      <div class="row" id="div_load_more">
+      </div> -->
   </div>
 
     <!--<button id="button" class="btn btn-default" type="submit" onclick="loadMore()">Load More</button>-->
   <script>
-    var count = 2;
+    var count = 3;
     function loadAjax() {
       // send new twiter to server using AJAX
+      // Reset
+      count = 3;
+      document.getElementById('twitters').innerHTML = '';
       $.ajax({
         url : "/twitter/post",
         type: "post",
@@ -71,11 +82,13 @@
     function loadTwitters(count) {
 
       // Load data from server + render.
+      document.getElementById('twitters').innerHTML = '';
+      
       $.ajax({
         url : "/twitter/post/load",
         type: "post",
         data: {
-          'count': count
+          'count': count + 1
         },
         beforeSend: function (xhr) {
           var token = $('meta[name="_token"]').attr('content');
@@ -83,39 +96,49 @@
             return xhr.setRequestHeader('X-CSRF-TOKEN', token);
           }
         },
-        success: function (data){
+        success: function (data) {
           document.getElementById('exampleTextarea').value = '';
           var twitters = JSON.parse(data);
+          console.log(twitters);
+         
           
-          document.getElementById('div-twitters').innerHTML = '';
-          if (twitters.length >= count) {
-            
-            for(var i = 0; i < twitters.length; i++) {
-              var div = document.createElement('div');
-              div.innerHTML = twitters[i].content;
-              div.setAttribute('class', 'col-sm-6 col-sm-offset-3');
-              document.getElementById('div-twitters').appendChild(div);
-              // var button = document.createElement('button');
-              // button.setAttribute('class', 'btn btn-default');
+          //document.getElementById('div_content').innerHTML = '';
+          //document.getElementById('div_time').innerHTML = '';
+          //document.getElementById('a_name').innerHTML = '';
+
+          var count_ = Math.min(count, twitters.length);
+          var aname = document.createElement('aname');
+          aname.innerHTML = twitters[twitters.length-1];
+
+          for(var i = 0; i < count_; i++) {
+              //name
+              document.getElementById('twitters').appendChild(aname);
+
+              //time
+              var divtime = document.createElement('divtime');
+              divtime.innerHTML = twitters[i].created_at;
+              //divtime.setAttribute('class','col-sm-6 col-sm-offset-3');
+              document.getElementById('twitters').appendChild(divtime);
+
+              //content
+              var divcontent = document.createElement('divcontent');
+              divcontent.innerHTML = twitters[i].content;
+              //divcontent.setAttribute('class', 'col-sm-6 col-sm-offset-3');
+              document.getElementById('twitters').appendChild(divcontent);
+
             }
+          if (count < twitters.length) {
+            
             var button = document.createElement('button');
             button.setAttribute('class', 'btn btn-default');
             button.setAttribute('id', 'button');
             button.setAttribute('type', 'submit');
-            button.setAttribute('onclick', 'loadAjax()');
+            button.setAttribute('onclick', 'loadMore()');
 
-            document.getElementById('div-twitters').appendChild(button);
+            document.getElementById('twitters').appendChild(button);
             document.getElementById('button').innerHTML = 'Load More';
-            
-          } else {
-              for(var i = 0; i < twitters.length; i++) {
-                var div = document.createElement('div');
-                div.innerHTML = twitters[i].content;
-                div.setAttribute('class', 'col-sm-6 col-sm-offset-3');
-                document.getElementById('div-twitters').appendChild(div);
-              }
-            }
-          },
+          } 
+        },
             
             // var div = document.createElement('div');
             // div.innerHTML = twitters[i].content;
