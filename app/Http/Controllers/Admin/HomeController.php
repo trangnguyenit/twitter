@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\Twitter;
+use App\User;
 
 use Illuminate\Http\Request;
 
@@ -22,12 +23,17 @@ class HomeController extends Controller
     {
         //dd(Auth::check());
         //dd('hehe');
-        return view('twitter');
+        if (Auth::check()){
+            return view('twitter');
+        }
+        return redirect('/admin/login');
+        // return view('twitter');
     }
 
     public function getLogout() {
     
         Auth::guard($this->getGuard())->logout();
+        // Auth::logout();
 
         return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/admin/login');
     }
@@ -61,19 +67,26 @@ class HomeController extends Controller
 
     public function load(Request $request) {
         $count = $request['count'];
-        // if ($count < 0){
-        //     $count = 3;
-        // }
+        if ($count < 0){
+            $count = 3;
+        }
         $offset = $request['offset'];
-        // if ($offset < 0){
-        //     $offset = 3;
-        // }
-        $name = Auth::user()->name;
+        if ($offset < 0){
+            $offset = 0;
+        }
+        // $name = Auth::user()->name;
 
         $twitters = Twitter::orderBy('created_at', 'desc')->take($count)->skip($offset)->get()->toArray();
-        array_push($twitters, $name);
+        foreach ($twitters as $key => $value) {
+            $user = User::find($value['user_id']);
+            $twitters[$key]['userName'] = $user->name;
+            // $twitters[$key]['hihi'] = 'hehe';
+        }
+        // array_push($twitters);
         echo json_encode($twitters);
     }
+
+
 
     protected function getGuard()
     {

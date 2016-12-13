@@ -12,12 +12,12 @@
 */
 
 Route::get('/', function () {
-    return 'welcome';
+    return redirect('/twitter');
 });
 
 Route::post('/admin/login', 'Admin\LoginController@postLogin');
 Route::get('/admin/login', 'Admin\LoginController@getLogin');
-Route::get('/admin/logout', 'HomeController@getLogout');
+Route::get('/admin/logout', 'Admin\HomeController@getLogout');
 //Route::get('/admin/logout', 'Auth\AuthController@getLogout')
 
 Route::get('/admin/register', 'Admin\RegisterController@getRegister');
@@ -26,5 +26,6 @@ Route::post('/admin/register', 'Admin\RegisterController@postRegister');
 Route::get('/twitter', 'Admin\HomeController@index');
 Route::post('/twitter/post', 'Admin\HomeController@twitt');
 Route::post('/twitter/post/load', 'Admin\HomeController@load');
+Route::get('/twitter/post/load', 'Admin\HomeController@load');
 
 

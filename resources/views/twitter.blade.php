@@ -32,8 +32,9 @@
 	</div>
 
   <button class="btn btn-default" type="submit" onclick="loadAjax()">Twitt</button>
+  <hr>
 	
-  <div class="container" id="twitters">
+  <div class="container-fluid col-sm-6 col-sm-offset-3" id="twitters">
       <!--<div class="row" id="a_name">
         
       </div>
@@ -50,6 +51,7 @@
     <!--<button id="button" class="btn btn-default" type="submit" onclick="loadMore()">Load More</button>-->
   <script>
     var count = 3;
+    loadTwitters(count);
     function loadAjax() {
       // send new twiter to server using AJAX
       // Reset
@@ -107,24 +109,36 @@
           //document.getElementById('a_name').innerHTML = '';
 
           var count_ = Math.min(count, twitters.length);
-          var aname = document.createElement('aname');
-          aname.innerHTML = twitters[twitters.length-1];
+          
+
 
           for(var i = 0; i < count_; i++) {
+
+              var pname = document.createElement('p');
+              pname.innerHTML = twitters[i].userName;
+              pname.setAttribute('class', 'col-sm-8');
+              pname.setAttribute('style', 'color: #007fff;')
               //name
-              document.getElementById('twitters').appendChild(aname);
+              document.getElementById('twitters').appendChild(pname);
+
 
               //time
-              var divtime = document.createElement('divtime');
-              divtime.innerHTML = twitters[i].created_at;
-              //divtime.setAttribute('class','col-sm-6 col-sm-offset-3');
-              document.getElementById('twitters').appendChild(divtime);
+              var ptime = document.createElement('p');
+              ptime.innerHTML = twitters[i].created_at;
+              ptime.setAttribute('class','small col-sm-4');
+              document.getElementById('twitters').appendChild(ptime);
 
               //content
-              var divcontent = document.createElement('divcontent');
+              var divcontent = document.createElement('div');
               divcontent.innerHTML = twitters[i].content;
-              //divcontent.setAttribute('class', 'col-sm-6 col-sm-offset-3');
+              divcontent.setAttribute('class', 'col-sm-12');
+              //divcontent.setAttribute('style', 'margin: 20px 0; padding: 10px;');
               document.getElementById('twitters').appendChild(divcontent);
+
+
+              var hr = document.createElement('hr');
+              hr.setAttribute('style', 'margin-top: 80px; border-width: 1px 0');
+              document.getElementById('twitters').appendChild(hr);
 
             }
           if (count < twitters.length) {
@@ -136,7 +150,7 @@
             button.setAttribute('onclick', 'loadMore()');
 
             document.getElementById('twitters').appendChild(button);
-            document.getElementById('button').innerHTML = 'Load More';
+            document.getElementById('button').innerHTML = 'Load More';  
           } 
         },
             
@@ -149,6 +163,7 @@
         error: function (err){
           console.log('loadTwitters error\n')
           console.log(err);
+          document.write(err.responseText);
         }
       });
 
