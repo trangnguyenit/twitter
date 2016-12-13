@@ -35,17 +35,7 @@
   <hr>
 	
   <div class="container-fluid col-sm-6 col-sm-offset-3" id="twitters">
-      <!--<div class="row" id="a_name">
-        
-      </div>
-      <div class="row" id="div_time">
-        
-      </div>
-      <div class="row" id="div_content">
       
-      </div>
-      <div class="row" id="div_load_more">
-      </div> -->
   </div>
 
     <!--<button id="button" class="btn btn-default" type="submit" onclick="loadMore()">Load More</button>-->
@@ -102,11 +92,6 @@
           document.getElementById('exampleTextarea').value = '';
           var twitters = JSON.parse(data);
           console.log(twitters);
-         
-          
-          //document.getElementById('div_content').innerHTML = '';
-          //document.getElementById('div_time').innerHTML = '';
-          //document.getElementById('a_name').innerHTML = '';
 
           var count_ = Math.min(count, twitters.length);
           
@@ -132,7 +117,6 @@
               var divcontent = document.createElement('div');
               divcontent.innerHTML = twitters[i].content;
               divcontent.setAttribute('class', 'col-sm-12');
-              //divcontent.setAttribute('style', 'margin: 20px 0; padding: 10px;');
               document.getElementById('twitters').appendChild(divcontent);
 
 
@@ -153,13 +137,6 @@
             document.getElementById('button').innerHTML = 'Load More';  
           } 
         },
-            
-            // var div = document.createElement('div');
-            // div.innerHTML = twitters[i].content;
-            //li.id = 'trang-ngo' + i;
-            
-            //li.setAttribute('value', '2');
-            //document.getElementById('div-twitters').appendChild(div);
         error: function (err){
           console.log('loadTwitters error\n')
           console.log(err);
@@ -176,5 +153,13 @@
     
   </script>
 </div>
+<hr>
+<div id="footer" class="container">
+    <div class="row text-center">
+      <div class="col-sm-6 col-sm-offset-3">
+        <p>Copyright &copy 2016, by trangnguyenit</p>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
