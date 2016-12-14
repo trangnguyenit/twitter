@@ -22,12 +22,11 @@ class HomeController extends Controller
     public function index()
     {
         //dd(Auth::check());
-        //dd('hehe');
-        if (Auth::check()){
-            return view('twitter');
+        if (Auth::check()) {
+            $name = Auth::user()->name;
+            return view('twitter', compact('name'));
         }
         return redirect('/admin/login');
-        // return view('twitter');
     }
 
     public function getLogout() {
@@ -41,7 +40,7 @@ class HomeController extends Controller
     public function twitt(Request $request) {
         
         if (Auth::check()) {
-            if (isset($request['content']) && $request['content']){
+            if (isset($request['content']) && $request['content']) {
                 $content = $request['content'];
                 $user_id = Auth::user()->id;
 
@@ -51,42 +50,33 @@ class HomeController extends Controller
 
                 $twitter->save();
                 return "OK";
-            }
-            else {
+            } else {
                 return 'error';
             }
-            // return;
-
-
         } else {
             redirect("/admin/login");
         }
-        // return view('/twitter');
         
     }
 
-    public function load(Request $request) {
+    public function load(Request $request) 
+    {
         $count = $request['count'];
-        if ($count < 0){
+        if ($count < 0) {
             $count = 3;
         }
         $offset = $request['offset'];
-        if ($offset < 0){
+        if ($offset < 0) {
             $offset = 0;
         }
-        // $name = Auth::user()->name;
 
         $twitters = Twitter::orderBy('created_at', 'desc')->take($count)->skip($offset)->get()->toArray();
         foreach ($twitters as $key => $value) {
             $user = User::find($value['user_id']);
             $twitters[$key]['userName'] = $user->name;
-            // $twitters[$key]['hihi'] = 'hehe';
         }
-        // array_push($twitters);
         echo json_encode($twitters);
     }
-
-
 
     protected function getGuard()
     {

@@ -21,6 +21,7 @@
       <li><a href="#">Page 1</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
+      <li><a href="#" id="name">{{ $name }}</a></li>
       <li><a href="admin/logout"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
     </ul>
   </div>
@@ -42,7 +43,8 @@
   <script>
     var count = 3;
     loadTwitters(count);
-    function loadAjax() {
+    function loadAjax() 
+    {
       // send new twiter to server using AJAX
       // Reset
       count = 3;
@@ -71,7 +73,8 @@
       
     }
 
-    function loadTwitters(count) {
+    function loadTwitters(count) 
+    {
 
       // Load data from server + render.
       document.getElementById('twitters').innerHTML = '';
@@ -98,33 +101,32 @@
 
 
           for(var i = 0; i < count_; i++) {
+            //name
+            var pname = document.createElement('p');
+            pname.innerHTML = twitters[i].userName;
+            pname.setAttribute('class', 'col-sm-8');
+            pname.setAttribute('style', 'color: #007fff;')
+            document.getElementById('twitters').appendChild(pname);
+         
+            //time
+            var ptime = document.createElement('p');
+            ptime.innerHTML = twitters[i].created_at;
+            ptime.setAttribute('class','small col-sm-4');
+            document.getElementById('twitters').appendChild(ptime);
 
-              var pname = document.createElement('p');
-              pname.innerHTML = twitters[i].userName;
-              pname.setAttribute('class', 'col-sm-8');
-              pname.setAttribute('style', 'color: #007fff;')
-              //name
-              document.getElementById('twitters').appendChild(pname);
-
-
-              //time
-              var ptime = document.createElement('p');
-              ptime.innerHTML = twitters[i].created_at;
-              ptime.setAttribute('class','small col-sm-4');
-              document.getElementById('twitters').appendChild(ptime);
-
-              //content
-              var divcontent = document.createElement('div');
-              divcontent.innerHTML = twitters[i].content;
-              divcontent.setAttribute('class', 'col-sm-12');
-              document.getElementById('twitters').appendChild(divcontent);
+            //content
+            var divcontent = document.createElement('div');
+            divcontent.innerHTML = twitters[i].content;
+            divcontent.setAttribute('class', 'col-sm-12');
+            document.getElementById('twitters').appendChild(divcontent);
 
 
-              var hr = document.createElement('hr');
-              hr.setAttribute('style', 'margin-top: 80px; border-width: 1px 0');
-              document.getElementById('twitters').appendChild(hr);
+            var hr = document.createElement('hr');
+            hr.setAttribute('style', 'margin-top: 80px; border-width: 1px 0');
+            document.getElementById('twitters').appendChild(hr);
 
-            }
+          }
+
           if (count < twitters.length) {
             
             var button = document.createElement('button');
@@ -146,7 +148,8 @@
 
     }
 
-    function loadMore() {
+    function loadMore() 
+    {
       count += 3;
       loadTwitters(count);
     }
