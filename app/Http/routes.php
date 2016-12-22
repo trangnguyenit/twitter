@@ -25,6 +25,7 @@ Route::post('/admin/register', 'Admin\RegisterController@postRegister');
 
 Route::get('/twitter', 'Admin\HomeController@index');
 Route::post('/twitter/post', 'Admin\HomeController@twitt');
+Route::get('/twitter/post', 'Admin\HomeController@twitt');
 Route::post('/twitter/post/load', 'Admin\HomeController@load');
 Route::get('/twitter/post/load', 'Admin\HomeController@load');
 

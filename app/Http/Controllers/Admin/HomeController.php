@@ -49,7 +49,13 @@ class HomeController extends Controller
                 $twitter->user_id = $user_id;
 
                 $twitter->save();
-                return "OK";
+                //return "OK";
+                $twitt = Twitter::orderBy('id', 'desc')->take(1)->get()->toArray();
+                foreach ($twitt as $key => $value) {
+                    $user = User::find($value['user_id']);
+                    $twitt[$key]['userName'] = $user->name;
+                }
+                echo json_encode($twitt);
             } else {
                 return 'error';
             }
@@ -70,12 +76,13 @@ class HomeController extends Controller
             $offset = 0;
         }
 
-        $twitters = Twitter::orderBy('created_at', 'desc')->take($count)->skip($offset)->get()->toArray();
+        $twitters = Twitter::orderBy('created_at', 'desc')->take($count-1)->skip($offset)->get()->toArray();
         foreach ($twitters as $key => $value) {
             $user = User::find($value['user_id']);
             $twitters[$key]['userName'] = $user->name;
         }
         echo json_encode($twitters);
+        //return $twitters->toJson();
     }
 
     protected function getGuard()
